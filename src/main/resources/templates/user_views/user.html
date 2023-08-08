@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: header">
+</head>
+<body>
+    <div class="container">
+        <div class="col-12 py-2">
+            <a class="btn btn-outline-dark" th:href="@{/user/new}">ADD</a>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <th scope="row" th:text="${user.id}">id</th>
+                        <td th:text="${user.login}">user login</td>
+                        <td>
+                            <a class="btn btn-success" th:href="@{/user/{id}(id=${user.id})}"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger" th:href="@{/user/delete/{id}(id=${user.id})}"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:replace="fragments/footer :: scripts"></script>
+</body>
+</html>
