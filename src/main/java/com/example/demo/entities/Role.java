@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +25,7 @@ public class Role {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 }
