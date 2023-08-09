@@ -39,8 +39,6 @@ public class SecurityConfig {
         auth.authenticationProvider(provider);
     }
 
-
-
     @Bean
     @Order(2)
     public SecurityFilterChain UiWebSecurityConfiguration (HttpSecurity http) throws Exception{
