@@ -20,8 +20,16 @@ public class ProductController {
     }
 
     @GetMapping()
-    public String indexPage(Model model){
-        model.addAttribute("products", productService.findAll());
+    public String indexPage(Model model,
+                            @RequestParam(name="titleFilter", required = false) String titleFilter){
+
+        if(titleFilter == null || titleFilter.isBlank()){
+            model.addAttribute("products", productService.findAll());
+        } else{
+            model.addAttribute("products", productService.getByTitle(titleFilter));
+        }
+
+
         return "product_views/product";
     }
 
@@ -31,19 +39,19 @@ public class ProductController {
         return "product_views/product_form";
     }
 
-    @PostMapping("/product_update")
+    @PostMapping("/update")
     public String updateProduct(Product product){
         productService.addOrUpdate(product);
         return "redirect:/product";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String removeProduct(@PathVariable (name = "id") Long id){
         productService.remove(id);
         return "redirect:/product";
     }
 
-    @PostMapping("/new")
+    @GetMapping("/new")
     public String newProduct(Model model){
         model.addAttribute(new Product());
         return "product_views/product_form";

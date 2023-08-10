@@ -53,7 +53,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+    /*@Bean
     @Order(1)
     public SecurityFilterChain ApiWebSecurityConfiguration (HttpSecurity http) throws Exception{
         http
@@ -78,5 +78,5 @@ public class SecurityConfig {
 
 
         return http.build();
-    }
+    }*/
 }

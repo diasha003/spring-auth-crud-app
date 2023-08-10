@@ -33,4 +33,12 @@ public class ProductService {
     public void addOrUpdate(Product product){
         productRepository.save(product);
     }
+
+    public List<Product> getByTitle(String nameFilter){
+        if(!nameFilter.contains("%")){
+            nameFilter = String.join("",nameFilter, "%");
+        }
+        return productRepository.findProductByTitleLike(nameFilter);
+    }
+
 }
