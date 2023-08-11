@@ -2,11 +2,17 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.Product;
 import com.example.demo.services.ProductService;
+import com.example.demo.services.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -21,14 +27,11 @@ public class ProductController {
 
     @GetMapping()
     public String indexPage(Model model,
-                            @RequestParam(name="titleFilter", required = false) String titleFilter){
+                            @RequestParam(name="titleFilter", required = false) Optional<String> titleFilter,
+                            @RequestParam(name = "min", required = false) Optional<BigDecimal> min,
+                            @RequestParam(name = "max", required = false) Optional<BigDecimal> max){
 
-        if(titleFilter == null || titleFilter.isBlank()){
-            model.addAttribute("products", productService.findAll());
-        } else{
-            model.addAttribute("products", productService.getByTitle(titleFilter));
-        }
-
+            model.addAttribute("products", productService.getByParams(titleFilter, min, max));
 
         return "product_views/product";
     }
@@ -55,5 +58,12 @@ public class ProductController {
     public String newProduct(Model model){
         model.addAttribute(new Product());
         return "product_views/product_form";
+    }
+
+    @ExceptionHandler
+    public ModelAndView notFoundExceptionHandler(NotFoundException exception){
+        ModelAndView modelAndView = new ModelAndView("/not_found");
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
+        return modelAndView;
     }
 }

@@ -5,6 +5,7 @@ import com.example.demo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,11 +35,22 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> getByTitle(String nameFilter){
-        if(!nameFilter.contains("%")){
-            nameFilter = String.join("",nameFilter, "%");
+    public List<Product> getByParams(Optional<String> nameFilter, Optional<BigDecimal> min, Optional<BigDecimal> max){
+
+        if(min.isPresent() || max.isPresent()){
+            return productRepository.findByPriceBetween(min,max);
         }
-        return productRepository.findProductByTitleLike(nameFilter);
+
+        if(nameFilter.isPresent()){
+            String filter = nameFilter.get();
+            if(!filter.contains("%")){
+                filter = String.join("",filter, "%");
+            }
+            return productRepository.findProductByTitleLike(filter);
+        }
+
+        return productRepository.findAll();
+
     }
 
 }

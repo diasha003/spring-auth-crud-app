@@ -64,7 +64,7 @@ public class UserController {
 
     @ExceptionHandler
     public ModelAndView notFoundExeptionHandler(ChangeSetPersister.NotFoundException exception){
-        ModelAndView modelAndView = new ModelAndView(); //добавить view
+        ModelAndView modelAndView = new ModelAndView("/not_found");
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }
